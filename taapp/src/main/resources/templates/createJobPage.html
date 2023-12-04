@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Courses</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2>Select a Course</h2>
+
+        <form th:action="@{/createJob}" th:object="${job}" method="post">
+            
+            <div class="mb-3">
+                <label for="selectedCourse" class="form-label">Select Course:</label>
+                <select class="form-select" id="courseName" name="courseName" required>
+                    <option value="" disabled selected>Select a Course</option>
+                    <!-- Loop through courses provided by the controller -->
+                    <option th:each="course : ${courses}" th:value="${course.courseName}" th:text="${course.courseName}">
+                    </option>
+                </select>
+                <label for="numOpenings">Select a value:</label>
+                <select id="numOpenings" name="numOpenings">
+                    <option th:each="value : ${#numbers.sequence(1, 10)}" th:value="${value}" th:text="${value}">
+                    </option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

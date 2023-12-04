@@ -29,7 +29,7 @@ public class CourseDAOImpl implements CourseDAO{
 	@Override
 	public List<Course> getAllCourses() {
 		try(Session session = sessionFactory.openSession()){
-            List<Course> allCourseList = session.createQuery("from course", Course.class).list();
+            List<Course> allCourseList = session.createQuery("from Course", Course.class).list();
             return allCourseList;
         }
         catch (Exception e){

@@ -10,9 +10,10 @@ import jakarta.persistence.Table;
 public class Course {
 
     @Id
+    @Column(name = "course_id", nullable = false)
     private String courseId;
     
-    @Column
+    @Column(name = "course_name", nullable = false)
     private String courseName;
 
 	public String getCourseId() {
