@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import edu.northeastern.taapp.dao.StaffDAO;
 import edu.northeastern.taapp.model.Staff;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -54,8 +55,8 @@ public class StaffController {
 		return "staffRegisterSuccess";
 	}
 
-	@PostMapping("/staffLogin")
-	public String studentLogin(Staff staff, Errors errors, Model model) {
+	@PostMapping("/staffDashboard")
+	public String staffDashboard(Staff staff, Errors errors, Model model, HttpServletRequest httprequest) {
 		String nuid = staff.getNuid();
 		String enteredPassword = staff.getPassword();
 
@@ -63,6 +64,7 @@ public class StaffController {
 
 		if (storedStaff != null) {
 			if (passwordEncoder.matches(enteredPassword, storedStaff.getPassword())) {
+				httprequest.getSession().setAttribute("storedStaff", storedStaff);
 				model.addAttribute("staff", storedStaff);
 				return "staffDashboard";
 			}
@@ -71,9 +73,23 @@ public class StaffController {
 		errors.rejectValue("password", "error.staff", "Invalid NUID or password");
 		return "staffLoginPage";
 	}
+	
+	@GetMapping("/staffDashboard")
+	public String staffDashboard(HttpServletRequest httprequest, Model model) {
+		System.out.println("Inside get staffDashboard");
+		Object sessionObj = httprequest.getSession().getAttribute("storedStaff");
+		if(sessionObj instanceof Staff) {
+			System.out.println("Inside get staffDashboard.if");
+			Staff storedStaff = (Staff) sessionObj;
+			model.addAttribute("staff", storedStaff);
+			return "staffDashboard";
+		}
+		return "redirect:/";
+	}
 
 	@GetMapping("/staffLogout")
     public String staffLogout(HttpSession session) {
+		session.invalidate();
         return "redirect:/";
     }
 }

@@ -4,35 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Courses</title>
+    <title>Select Staff and Job</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 
 <body>
     <div class="container mt-5">
-        <h2>Select a Course</h2>
+        <h2>Select Course</h2>
 
-        <div th:if="${#fields.hasErrors('job.*')}" class="alert alert-danger">
-            <p th:each="error : ${#fields.errors('job.*')}" th:text="${error}"></p>
-        </div>
-
-        <form th:action="@{/createJob}" th:object="${job}" method="post">
-            
+        <form th:action="@{/apply/application}" method="post">
             <div class="mb-3">
-                <label for="selectedCourse" class="form-label">Select Course:</label>
-                <select class="form-select" id="courseId" name="courseId" required>
+                <label for="selectedCourse" class="form-label" th:text="${'Select Course under Professor ' + selectedStaff.fullName}"></label>
+                <select class="form-select" id="selectedCourse" name="selectedCourse" required>
                     <option value="" disabled selected>Select a Course</option>
-                    <option th:each="course : ${courses}" th:value="${course.courseId}" th:text="${course.courseName}">
-                    </option>
-                </select>
-                <label for="numOpenings">Select a value:</label>
-                <select id="numOpenings" name="numOpenings">
-                    <option th:each="value : ${#numbers.sequence(1, 10)}" th:value="${value}" th:text="${value}">
+                    <option th:each="job : ${jobsByStaff}" th:value="${job.jobId}" th:text="${job.course.courseName}">
                     </option>
                 </select>
             </div>
-
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

@@ -15,6 +15,10 @@ public class Course {
     
     @Column(name = "course_name", nullable = false)
     private String courseName;
+    
+    public Course() {
+    	
+    }
 
 	public String getCourseId() {
 		return courseId;

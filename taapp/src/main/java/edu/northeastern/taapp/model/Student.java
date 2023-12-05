@@ -5,7 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
@@ -66,17 +65,11 @@ public class Student {
     @Transient
     private MultipartFile photo;
     
-    @Transient
-    private MultipartFile resume;
-    
     @Column(name = "transcript_path")
     private String transcriptPath;
 
     @Column(name = "photo_path")
     private String photoPath;
-    
-    @Column(name = "resume_path")
-    private String resumePath;
     
     @NotBlank(message = "Password must not be blank")
     @Column(name = "password", nullable = false)
@@ -189,15 +182,6 @@ public class Student {
 	public void setPhoto(MultipartFile photo) {
 		this.photo = photo;
 	}
-	
-
-	public MultipartFile getResume() {
-		return resume;
-	}
-
-	public void setResume(MultipartFile resume) {
-		this.resume = resume;
-	}
 
 	public String getTranscriptPath() {
 		return transcriptPath;
@@ -213,14 +197,6 @@ public class Student {
 
 	public void setPhotoPath(String photoPath) {
 		this.photoPath = photoPath;
-	}
-
-	public String getResumePath() {
-		return resumePath;
-	}
-
-	public void setResumePath(String resumePath) {
-		this.resumePath = resumePath;
 	}
 
 	public String getPassword() {

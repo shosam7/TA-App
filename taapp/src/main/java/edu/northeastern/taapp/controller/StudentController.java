@@ -77,8 +77,8 @@ public class StudentController {
 		return "studentRegisterSuccess";
 	}
 	
-	@PostMapping("/studentLogin")
-    public String studentLogin(Student student, Errors errors, Model model) {
+	@PostMapping("/studentDashboard")
+    public String studentDashboard(Student student, Errors errors, Model model, HttpSession httpSession) {
         String nuid = student.getNuid();
         String enteredPassword = student.getPassword();
 
@@ -86,6 +86,7 @@ public class StudentController {
 
         if (storedStudent != null) {
             if (passwordEncoder.matches(enteredPassword, storedStudent.getPassword())) {
+            	httpSession.setAttribute("storedStudent", storedStudent);
                 model.addAttribute("student", storedStudent);
                 return "studentDashboard";
             }
@@ -95,8 +96,20 @@ public class StudentController {
         return "studentLoginPage";
     }
 	
+	@GetMapping("/studentDashboard")
+	public String studentDashboard(HttpSession httpSession, Model model) {
+		Object sessionObj = httpSession.getAttribute("storedStudent");
+		if(sessionObj instanceof Student) {
+			Student storedStudent = (Student) sessionObj;
+			model.addAttribute("student", storedStudent);
+			return "studentDashboard";
+		}
+		return "redirect:/";
+	}
+	
 	@GetMapping("/studentLogout")
     public String studentLogout(HttpSession session) {
+		session.invalidate();
         return "redirect:/";
     }
 }

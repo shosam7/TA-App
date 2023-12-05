@@ -39,6 +39,10 @@ public class Staff {
     @NotBlank(message = "Password must not be blank")
     @Column(name = "password", nullable = false)
     private String password;
+    
+    public Staff() {
+    	
+    }
 
 	public String getNuid() {
 		return nuid;

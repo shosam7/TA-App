@@ -1,5 +1,6 @@
 package edu.northeastern.taapp.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,13 +10,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(
 	    name = "job",
 	    uniqueConstraints = {
-	        @UniqueConstraint(columnNames = {"staff_nuid", "course_name"})
+	        @UniqueConstraint(columnNames = {"staff_nuid", "course_id"})
 	    }
 	)
 public class Job {
@@ -25,16 +25,20 @@ public class Job {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long jobId;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "staff_nuid")
     private Staff staff;
     
-    @Column(name = "course_name", nullable = false)
-    private String courseName;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "course_id")
+    private Course course;
     
-    @NotBlank(message = "Select atleast 1")
     @Column(name = "num_openings", nullable = false)
     private int numOpenings;
+    
+    public Job() {
+    	this.numOpenings= 1;
+    }
 
 	public Long getJobId() {
 		return jobId;
@@ -52,12 +56,12 @@ public class Job {
 		this.staff = staff;
 	}
 
-	public String getCourseName() {
-		return courseName;
+	public Course getCourse() {
+		return course;
 	}
 
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
 	public int getNumOpenings() {

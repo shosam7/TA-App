@@ -12,7 +12,7 @@
         <div th:if="${#fields.hasErrors('student.*')}" class="alert alert-danger">
             <p th:each="error : ${#fields.errors('student.*')}" th:text="${error}"></p>
         </div>
-        <form th:action="@{/studentLogin}" method="post">
+        <form th:action="@{/studentDashboard}" method="post">
             <div class="mb-3">
                 <label for="nuid" class="form-label">NUID:</label>
                 <input type="text" class="form-control" id="nuid" name="nuid" required>
