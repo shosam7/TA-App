@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import edu.northeastern.taapp.dao.StudentDAO;
 import edu.northeastern.taapp.model.Student;
 import edu.northeastern.taapp.util.FileUploadUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -78,7 +79,7 @@ public class StudentController {
 	}
 	
 	@PostMapping("/studentDashboard")
-    public String studentDashboard(Student student, Errors errors, Model model, HttpSession httpSession) {
+    public String studentDashboard(Student student, Errors errors, Model model, HttpServletRequest httpRequest) {
         String nuid = student.getNuid();
         String enteredPassword = student.getPassword();
 
@@ -86,7 +87,7 @@ public class StudentController {
 
         if (storedStudent != null) {
             if (passwordEncoder.matches(enteredPassword, storedStudent.getPassword())) {
-            	httpSession.setAttribute("storedStudent", storedStudent);
+            	httpRequest.getSession().setAttribute("storedStudent", storedStudent);
                 model.addAttribute("student", storedStudent);
                 return "studentDashboard";
             }
@@ -97,8 +98,8 @@ public class StudentController {
     }
 	
 	@GetMapping("/studentDashboard")
-	public String studentDashboard(HttpSession httpSession, Model model) {
-		Object sessionObj = httpSession.getAttribute("storedStudent");
+	public String studentDashboard(HttpServletRequest httpRequest, Model model) {
+		Object sessionObj = httpRequest.getSession().getAttribute("storedStudent");
 		if(sessionObj instanceof Student) {
 			Student storedStudent = (Student) sessionObj;
 			model.addAttribute("student", storedStudent);
@@ -108,8 +109,8 @@ public class StudentController {
 	}
 	
 	@GetMapping("/studentLogout")
-    public String studentLogout(HttpSession session) {
-		session.invalidate();
+    public String studentLogout(HttpServletRequest httpRequest) {
+		httpRequest.getSession().invalidate();
         return "redirect:/";
     }
 }

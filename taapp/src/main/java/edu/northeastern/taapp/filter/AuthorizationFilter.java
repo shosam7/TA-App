@@ -1,4 +1,4 @@
-package edu.northeastern.taapp.Filter;
+package edu.northeastern.taapp.filter;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;

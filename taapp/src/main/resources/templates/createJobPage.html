@@ -26,11 +26,20 @@
                     <option th:each="course : ${courses}" th:value="${course.courseId}" th:text="${course.courseName}">
                     </option>
                 </select>
+            </div>
+
+            <div class="mb-3">
                 <label for="numOpenings">Select a value:</label>
                 <select id="numOpenings" name="numOpenings">
                     <option th:each="value : ${#numbers.sequence(1, 10)}" th:value="${value}" th:text="${value}">
                     </option>
                 </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="requirements" class="form-label">Requirements:</label>
+                <textarea class="form-control" id="requirements" name="requirements" rows="5"
+                          th:field="${job.requirements}"></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>

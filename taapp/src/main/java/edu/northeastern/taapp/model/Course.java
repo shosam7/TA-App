@@ -1,8 +1,11 @@
 package edu.northeastern.taapp.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,6 +18,9 @@ public class Course {
     
     @Column(name = "course_name", nullable = false)
     private String courseName;
+    
+    @OneToMany(mappedBy = "course")
+    private List<Job> jobs;
     
     public Course() {
     	
@@ -34,6 +40,14 @@ public class Course {
 
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
+	}
+
+	public List<Job> getJobs() {
+		return jobs;
+	}
+
+	public void setJobs(List<Job> jobs) {
+		this.jobs = jobs;
 	}
 }
 

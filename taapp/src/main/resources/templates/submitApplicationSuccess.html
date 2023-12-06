@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Add your head content here -->
+    <title>Application Submitted</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center">Application Submitted Successfully</h2>
+            </div>
+            <div class="card-body">
+
+                <!-- Display Staff Name -->
+                <p class="card-text"><strong>Professor Name:</strong> <span th:text="${fullName}"></span></p>
+
+                <!-- Display Course Name -->
+                <p class="card-text"><strong>Course Name:</strong> <span th:text="${courseName}"></span></p>
+
+                <!-- Success Message -->
+                <p class="card-text text-success">Your application has been submitted successfully!</p>
+
+                <!-- Button to Go Back to Student Dashboard -->
+                <a href="/studentDashboard" class="btn btn-primary">Back to Student Dashboard</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

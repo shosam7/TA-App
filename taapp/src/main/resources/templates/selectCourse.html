@@ -15,10 +15,10 @@
 
         <form th:action="@{/apply/application}" method="post">
             <div class="mb-3">
-                <label for="selectedCourse" class="form-label" th:text="${'Select Course under Professor ' + selectedStaff.fullName}"></label>
-                <select class="form-select" id="selectedCourse" name="selectedCourse" required>
+                <label for="selectedJob" class="form-label" th:text="${'Select Course under Professor ' + selectedStaff.fullName}"></label>
+                <select class="form-select" id="selectedJob" name="selectedJob" required>
                     <option value="" disabled selected>Select a Course</option>
-                    <option th:each="job : ${jobsByStaff}" th:value="${job.jobId}" th:text="${job.course.courseName}">
+                    <option th:each="job : ${jobs}" th:value="${job.jobId}" th:text="${job.course.courseName}">
                     </option>
                 </select>
             </div>
