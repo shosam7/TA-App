@@ -15,7 +15,6 @@ import edu.northeastern.taapp.dao.StudentDAO;
 import edu.northeastern.taapp.model.Student;
 import edu.northeastern.taapp.util.FileUploadUtil;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller

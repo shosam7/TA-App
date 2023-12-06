@@ -36,9 +36,14 @@ public class StudentDAOImpl extends DAO implements StudentDAO {
 
 	@Override
 	public void updateStudent(Student student) {
-		begin();
-		getSession().merge(student);
-		commit();
+		try {
+			begin();
+			getSession().merge(student);
+			commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			rollback();
+		}
 	}
 
 	@Override

@@ -56,4 +56,16 @@ public class JobDAOImpl extends DAO implements JobDAO {
                 .setParameter("course", course)
                 .uniqueResult();
 	}
+
+	@Override
+	public void updateJob(Job job) {
+		try {
+			begin();
+			getSession().merge(job);
+			commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			rollback();
+		}
+	}
 }

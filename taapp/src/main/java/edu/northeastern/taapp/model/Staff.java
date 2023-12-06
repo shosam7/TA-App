@@ -1,13 +1,8 @@
 package edu.northeastern.taapp.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -31,10 +26,6 @@ public class Staff {
     @Pattern(regexp = ".*@northeastern\\.edu$", message = "Enter northeastern mail id")
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-
-    
-    @OneToMany(mappedBy = "staff", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Job> jobs = new ArrayList<>();
 
     @NotBlank(message = "Password must not be blank")
     @Column(name = "password", nullable = false)
@@ -66,14 +57,6 @@ public class Staff {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public List<Job> getJobs() {
-		return jobs;
-	}
-
-	public void setJobs(List<Job> jobs) {
-		this.jobs = jobs;
 	}
 
 	public String getPassword() {
