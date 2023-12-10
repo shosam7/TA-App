@@ -25,4 +25,6 @@ public interface ApplicationDAO {
 	void deleteApplication(Long applicationId);
 	
 	List<Application> getApplicationsByStudentAndStatus(Student student, Status status);
+	
+	List<Application> getApplicationsByJob(Job job);
 }

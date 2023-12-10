@@ -17,6 +17,7 @@ public class CourseDAOImpl extends DAO implements CourseDAO {
 	@Override
 	public List<Course> getAllCourses() {
 		List<Course> allCourseList = getSession().createQuery("from Course", Course.class).list();
+		close();
 		return allCourseList;
 	}
 

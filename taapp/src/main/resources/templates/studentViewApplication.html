@@ -19,6 +19,8 @@
                 <h4 class="card-title">Application Details</h4>
             </div>
             <div class="card-body">
+                <p><strong>Professor:</strong> <span th:text="${taApplication.staff.fullName}"></span></p>
+                <p><strong>Course:</strong> <span th:text="${taApplication.job.course.courseName}"></span></p>
                 <p><strong>Skills:</strong> <span th:text="${taApplication.skills}"></span></p>
                 <p><strong>Grade:</strong> <span th:text="${taApplication.grade}"></span></p>
                 <p><strong>Status:</strong> <span th:text="${taApplication.status}"></span></p>

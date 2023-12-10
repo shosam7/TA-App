@@ -19,18 +19,22 @@ public class StudentDAOImpl extends DAO implements StudentDAO {
 			commit();
 		} catch (HibernateException e) {
 			rollback();
+		}  finally {
+			close();
 		}
 	}
 
 	@Override
 	public Student getStudentById(String id) {
 		Student student = getSession().get(Student.class, id);
+		close();
 		return student;
 	}
 
 	@Override
 	public List<Student> getAllStudents() {
 		List<Student> allStudentsList = getSession().createQuery("from Student", Student.class).list();
+		close();
 		return allStudentsList;
 	}
 
@@ -43,6 +47,8 @@ public class StudentDAOImpl extends DAO implements StudentDAO {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			rollback();
+		}  finally {
+			close();
 		}
 	}
 
@@ -57,6 +63,8 @@ public class StudentDAOImpl extends DAO implements StudentDAO {
 			commit();
 		} catch (HibernateException e) {
 			rollback();
+		}  finally {
+			close();
 		}
 	}
 
@@ -64,6 +72,7 @@ public class StudentDAOImpl extends DAO implements StudentDAO {
 	public Student getStudentByEmail(String email) {
 			Query<Student> query = getSession().createQuery("from Student where email = :email", Student.class);
 			query.setParameter("email", email);
-			return query.uniqueResult();
+			Student student = query.uniqueResult();
+			return student;
 	}
 }

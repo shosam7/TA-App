@@ -209,9 +209,7 @@ public class ApplicationController {
 		}
 		
 		Application application = applicationDAO.getApplicationById(applicationId);
-		Student student = studentDAO.getStudentById(storedStudent.getNuid());
-		List<Application> studentApplications = applicationDAO.getApplicationsByStudent(student);
-		if (!studentApplications.contains(application)) {
+		if (!application.getStudent().getNuid().equals(storedStudent.getNuid())) {
 			return "redirect:/";
 		}
 		model.addAttribute("taApplication", application);
@@ -226,12 +224,9 @@ public class ApplicationController {
 		if (storedStudent == null) {
 			return "redirect:/";
 		}
-		
-		Student student = studentDAO.getStudentById(storedStudent.getNuid());
 		Application application = applicationDAO.getApplicationById(applicationId);
 		
-		List<Application> studentApplications = applicationDAO.getApplicationsByStudent(student);
-		if (!studentApplications.contains(application)) {
+		if (!application.getStudent().getNuid().equals(storedStudent.getNuid())) {
 			return "redirect:/";
 		}
 		applicationDAO.deleteApplication(applicationId);

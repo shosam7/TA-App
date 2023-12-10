@@ -19,12 +19,15 @@ public class StaffDAOImpl extends DAO implements StaffDAO {
 			commit();
 		} catch (HibernateException e) {
 			rollback();
+		}  finally {
+			close();
 		}
 	}
 
 	@Override
 	public Staff getStaffById(String id) {
 		Staff staff = getSession().get(Staff.class, id);
+		close();
 		return staff;
 	}
 
@@ -32,7 +35,9 @@ public class StaffDAOImpl extends DAO implements StaffDAO {
 	public Staff getStaffByEmail(String email) {
 		Query<Staff> query = getSession().createQuery("from Staff where email = :email", Staff.class);
 		query.setParameter("email", email);
-		return query.uniqueResult();
+		Staff staff = query.uniqueResult();
+		close();
+		return staff;
 	}
 
 	@Override
@@ -49,8 +54,9 @@ public class StaffDAOImpl extends DAO implements StaffDAO {
 			commit();
 		} catch (HibernateException e) {
 			rollback();
+		}  finally {
+			close();
 		}
-
 	}
 	
 	@Override
@@ -64,6 +70,8 @@ public class StaffDAOImpl extends DAO implements StaffDAO {
 			commit();
 		} catch (HibernateException e) {
 			rollback();
+		}  finally {
+			close();
 		}
 	}
 

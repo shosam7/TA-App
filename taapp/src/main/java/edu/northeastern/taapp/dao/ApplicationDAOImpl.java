@@ -24,39 +24,55 @@ public class ApplicationDAOImpl extends DAO implements ApplicationDAO {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			rollback();
+		} finally {
+			close();
 		}
 	}
 
 	@Override
 	public Application getApplicationByStudentAndJob(Student student, Job job) {
 		String hql = "FROM Application a WHERE a.student = :student AND a.job = :job";
-		return getSession().createQuery(hql, Application.class).setParameter("student", student)
+		Application application = getSession().createQuery(hql, Application.class).setParameter("student", student)
 				.setParameter("job", job).uniqueResult();
+		close();
+		return application;
 	}
 
 	@Override
 	public List<Application> getApplicationsByStaff(Staff staff) {
 		String hql = "FROM Application a WHERE a.staff = :staff";
-		return getSession().createQuery(hql, Application.class).setParameter("staff", staff).list();
+		List<Application> applications = getSession().createQuery(hql, Application.class).setParameter("staff", staff).list();
+		close();
+		return applications;
 	}
 
 	@Override
 	public Application getApplicationById(Long applicationId) {
 		Application application = getSession().get(Application.class, applicationId);
+		close();
 		return application;
 	}
 
 	@Override
 	public void updateApplication(Application application) {
-		begin();
-		getSession().merge(application);
-		commit();
+		try {
+			begin();
+			getSession().merge(application);
+			commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			rollback();
+		} finally {
+			close();
+		}
 	}
 
 	@Override
 	public List<Application> getApplicationsByStudent(Student student) {
 		String hql = "FROM Application a WHERE a.student = :student";
-		return getSession().createQuery(hql, Application.class).setParameter("student", student).list();
+		List<Application> applications = getSession().createQuery(hql, Application.class).setParameter("student", student).list();
+		close();
+		return applications;
 	}
 
 	@Override
@@ -70,6 +86,8 @@ public class ApplicationDAOImpl extends DAO implements ApplicationDAO {
 			commit();
 		} catch (HibernateException e) {
 			rollback();
+		}  finally {
+			close();
 		}
 	}
 
@@ -82,6 +100,21 @@ public class ApplicationDAOImpl extends DAO implements ApplicationDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Collections.emptyList();
+		} finally {
+			close();
+		}
+	}
+
+	@Override
+	public List<Application> getApplicationsByJob(Job job) {
+		try {
+			String hql = "FROM Application a WHERE a.job = :job";
+			return getSession().createQuery(hql, Application.class).setParameter("job", job).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		} finally {
+			close();
 		}
 	}
 }

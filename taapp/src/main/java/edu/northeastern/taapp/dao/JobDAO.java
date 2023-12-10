@@ -21,4 +21,6 @@ public interface JobDAO {
 	Job getJobByStaffAndCourse(Staff staff, Course course);
 	
 	void updateJob(Job job);
+	
+	void deleteJob(Long jobId);
 }
