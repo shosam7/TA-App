@@ -10,6 +10,23 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">All Open Jobs</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/studentLogout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mt-5">
         <h2>All Jobs</h2>
 
@@ -18,7 +35,8 @@
                 <tr>
                     <th>Course Name</th>
                     <th>Number of Openings</th>
-                    <th>Staff Name</th>
+                    <th>Professor Name</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +44,12 @@
                     <td th:text="${job.course.courseName}"></td>
                     <td th:text="${job.numOpenings}"></td>
                     <td th:text="${job.staff.fullName}"></td>
+                    <td>
+                        <form th:action="@{/apply/application}" method="post">
+                            <input type="hidden" th:name="selectedJob" th:value="${job.jobId}" />
+                            <button type="submit" class="btn btn-primary">Apply</button>
+                        </form>
+                    </td>
                 </tr>
             </tbody>
         </table>

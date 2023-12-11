@@ -1,6 +1,6 @@
 package edu.northeastern.taapp.dao;
 
-import java.util.List;
+import java.util.List; 
 
 import org.hibernate.HibernateException;
 import org.springframework.stereotype.Repository;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import edu.northeastern.taapp.model.Course;
 import edu.northeastern.taapp.model.Job;
 import edu.northeastern.taapp.model.Staff;
-import edu.northeastern.taapp.model.Student;
 
 @Repository
 public class JobDAOImpl extends DAO implements JobDAO {
@@ -94,5 +93,12 @@ public class JobDAOImpl extends DAO implements JobDAO {
 		}  finally {
 			close();
 		}
+	}
+
+	@Override
+	public List<Job> getJobsByCourse(Course course) {
+		List<Job> jobsByCourse = getSession().createQuery("FROM Job j WHERE j.course = :course", Job.class).setParameter("course", course).list();
+		close();
+		return jobsByCourse;
 	}
 }

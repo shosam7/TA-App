@@ -19,7 +19,7 @@ public class StudentDAOImpl extends DAO implements StudentDAO {
 			commit();
 		} catch (HibernateException e) {
 			rollback();
-		}  finally {
+		} finally {
 			close();
 		}
 	}
@@ -47,7 +47,7 @@ public class StudentDAOImpl extends DAO implements StudentDAO {
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			rollback();
-		}  finally {
+		} finally {
 			close();
 		}
 	}
@@ -63,16 +63,17 @@ public class StudentDAOImpl extends DAO implements StudentDAO {
 			commit();
 		} catch (HibernateException e) {
 			rollback();
-		}  finally {
+		} finally {
 			close();
 		}
 	}
 
 	@Override
 	public Student getStudentByEmail(String email) {
-			Query<Student> query = getSession().createQuery("from Student where email = :email", Student.class);
-			query.setParameter("email", email);
-			Student student = query.uniqueResult();
-			return student;
+		Query<Student> query = getSession().createQuery("from Student where email = :email", Student.class);
+		query.setParameter("email", email);
+		Student student = query.uniqueResult();
+		close();
+		return student;
 	}
 }

@@ -18,6 +18,8 @@ public interface JobDAO {
 	
 	List<Job> getJobsByStaff(Staff staff);
 	
+	List<Job> getJobsByCourse(Course course);
+	
 	Job getJobByStaffAndCourse(Staff staff, Course course);
 	
 	void updateJob(Job job);

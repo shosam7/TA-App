@@ -34,6 +34,8 @@
             <div class="card-footer">
                 <!-- Download Resume Button -->
                 <a th:href="@{'/downloadResume/' + ${taApplication.applicationId}}" class="btn btn-primary" role="button">Download Resume</a>
+                <a th:href="@{'/viewPDF/' + ${'Resume'} + '/' + ${taApplication.applicationId}}" class="btn btn-info"
+                    role="button" target="_blank">View Resume</a>
             </div>
         </div>
 

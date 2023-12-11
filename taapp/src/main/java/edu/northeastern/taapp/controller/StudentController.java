@@ -22,94 +22,144 @@ public class StudentController {
 
 	@Autowired
 	private StudentDAO studentDAO;
-	
+
 	@Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@PostMapping("/studentRegister")
-	public String studentRegister(@Valid @ModelAttribute("student") Student student,BindingResult bindingResult, Model studentModel) {
-		
+	public String studentRegister(@Valid @ModelAttribute("student") Student student, BindingResult bindingResult,
+			Model studentModel) {
+
 		Student existingStudentById = studentDAO.getStudentById(student.getNuid());
 		Student existingStudentByEmail = studentDAO.getStudentByEmail(student.getEmail());
-	    if (existingStudentById != null) {
-	        bindingResult.rejectValue("nuid", "error.student", "NUID already exists");
-	    }
-	    
-	    if (existingStudentByEmail != null) {
-	        bindingResult.rejectValue("email", "error.student", "Email already exists");
-	    }
-	    
-	    if (bindingResult.hasErrors()) {
-	        return "studentRegisterPage";
-	    }
-	    
+		if (existingStudentById != null) {
+			bindingResult.rejectValue("nuid", "error.student", "NUID already exists");
+		}
+
+		if (existingStudentByEmail != null) {
+			bindingResult.rejectValue("email", "error.student", "Email already exists");
+		}
+
+		if (bindingResult.hasErrors()) {
+			return "studentRegisterPage";
+		}
+
 		MultipartFile transcript = student.getTranscript();
 		MultipartFile photo = student.getPhoto();
-		
+
 		if (transcript != null && !transcript.isEmpty()) {
-	        if (!FileUploadUtil.isPDF(transcript)) {
-	        	bindingResult.rejectValue("transcript", "error.student", "Transcript must be a PDF file");
-	            return "studentRegisterPage";
-	        }
-	        String transcriptPath = FileUploadUtil.saveFile(transcript, student.getNuid(), "Transcript");
-	        student.setTranscriptPath(transcriptPath);
-	    }
+			if (!FileUploadUtil.isPDF(transcript)) {
+				bindingResult.rejectValue("transcript", "error.student", "Transcript must be a PDF file");
+				return "studentRegisterPage";
+			}
+			String transcriptPath = FileUploadUtil.saveFile(transcript, student.getNuid(), "Transcript");
+			student.setTranscriptPath(transcriptPath);
+		}
 
-	    if (photo != null && !photo.isEmpty()) {
-	        if (!FileUploadUtil.isJPEG(photo)) {
-	        	bindingResult.rejectValue("photo", "error.student", "Photo must be a Jpg file");
-	            return "studentRegisterPage";
-	        }
-	        String photoPath = FileUploadUtil.saveFile(photo, student.getNuid(), "Photo");
-	        student.setPhotoPath(photoPath);
-	    }
+		if (photo != null && !photo.isEmpty()) {
+			if (!FileUploadUtil.isJPEG(photo)) {
+				bindingResult.rejectValue("photo", "error.student", "Photo must be a Jpg file");
+				return "studentRegisterPage";
+			}
+			String photoPath = FileUploadUtil.saveFile(photo, student.getNuid(), "Photo");
+			student.setPhotoPath(photoPath);
+		}
 
-	    String hashedPassword = passwordEncoder.encode(student.getPassword());
-        student.setPassword(hashedPassword);
-	    
+		String hashedPassword = passwordEncoder.encode(student.getPassword());
+		student.setPassword(hashedPassword);
+
 		try {
 			studentDAO.saveStudent(student);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			return "studentRegisterFail";
 		}
-		
+
 		studentModel.addAttribute("student", student);
 		return "studentRegisterSuccess";
 	}
-	
+
 	@PostMapping("/studentDashboard")
-    public String studentDashboard(Student student, Errors errors, Model model, HttpServletRequest httpRequest) {
-        String nuid = student.getNuid();
-        String enteredPassword = student.getPassword();
+	public String studentDashboard(Student student, Errors errors, Model model, HttpServletRequest httpRequest) {
+		String nuid = student.getNuid();
+		String enteredPassword = student.getPassword();
 
-        Student storedStudent = studentDAO.getStudentById(nuid);
+		Student storedStudent = studentDAO.getStudentById(nuid);
 
-        if (storedStudent != null) {
-            if (passwordEncoder.matches(enteredPassword, storedStudent.getPassword())) {
-            	httpRequest.getSession().setAttribute("storedStudent", storedStudent);
-                model.addAttribute("student", storedStudent);
-                return "studentDashboard";
-            }
-        }
-        
-        errors.rejectValue("password", "error.student", "Invalid NUID or password");
-        return "studentLoginPage";
-    }
-	
+		if (storedStudent != null) {
+			if (passwordEncoder.matches(enteredPassword, storedStudent.getPassword())) {
+				httpRequest.getSession().setAttribute("storedStudent", storedStudent);
+				model.addAttribute("student", storedStudent);
+				return "studentDashboard";
+			}
+		}
+
+		errors.rejectValue("password", "error.student", "Invalid NUID or password");
+		return "studentLoginPage";
+	}
+
 	@GetMapping("/studentDashboard")
 	public String studentDashboard(HttpServletRequest httpRequest, Model model) {
 		Object sessionObj = httpRequest.getSession().getAttribute("storedStudent");
-		if(sessionObj instanceof Student) {
+		if (sessionObj instanceof Student) {
 			Student storedStudent = (Student) sessionObj;
 			model.addAttribute("student", storedStudent);
 			return "studentDashboard";
 		}
 		return "redirect:/";
 	}
-	
+
 	@GetMapping("/studentLogout")
-    public String studentLogout(HttpServletRequest httpRequest) {
+	public String studentLogout(HttpServletRequest httpRequest) {
 		httpRequest.getSession().invalidate();
-        return "redirect:/";
-    }
+		return "redirect:/";
+	}
+
+	@GetMapping("/studentEditProfilePage")
+	public String editProfile(Model model, HttpServletRequest httpRequest) {
+		Student storedStudent = (Student) httpRequest.getSession().getAttribute("storedStudent");
+		model.addAttribute("student", storedStudent);
+		return "studentEditProfilePage";
+	}
+
+	@PostMapping("/updateStudent")
+	public String updateStudent(@ModelAttribute Student student, HttpServletRequest httpRequest,
+			BindingResult bindingResult) {
+		Student storedStudent = (Student) httpRequest.getSession().getAttribute("storedStudent");
+		
+		student.setNuid(storedStudent.getNuid());
+		student.setEmail(storedStudent.getEmail());
+		student.setPassword(storedStudent.getPassword());
+		
+		MultipartFile transcript = student.getTranscript();
+		MultipartFile photo = student.getPhoto();
+
+		if (transcript != null && !transcript.isEmpty()) {
+			if (!FileUploadUtil.isPDF(transcript)) {
+				bindingResult.rejectValue("transcript", "error.student", "Transcript must be a PDF file");
+			} else {
+				String transcriptPath = FileUploadUtil.saveFile(transcript, student.getNuid(), "Transcript");
+				student.setTranscriptPath(transcriptPath);
+			}
+		} else {
+			student.setTranscriptPath(storedStudent.getTranscriptPath());
+		}
+
+		if (photo != null && !photo.isEmpty()) {
+			if (!FileUploadUtil.isJPEG(photo)) {
+				bindingResult.rejectValue("photo", "error.student", "Photo must be a Jpg file");
+			} else {
+				String photoPath = FileUploadUtil.saveFile(photo, student.getNuid(), "Photo");
+				student.setPhotoPath(photoPath);
+			}
+		} else {
+			student.setPhotoPath(storedStudent.getPhotoPath());
+		}
+
+		if (bindingResult.hasErrors()) {
+			return "studentEditProfilePage";
+		}
+		studentDAO.updateStudent(student);
+		httpRequest.getSession().setAttribute("storedStudent", student);
+		return "redirect:/studentDashboard";
+	}
 }

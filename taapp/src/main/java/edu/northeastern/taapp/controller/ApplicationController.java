@@ -3,6 +3,9 @@ package edu.northeastern.taapp.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.northeastern.taapp.dao.ApplicationDAO;
+import edu.northeastern.taapp.dao.CourseDAO;
 import edu.northeastern.taapp.dao.JobDAO;
 import edu.northeastern.taapp.dao.StaffDAO;
 import edu.northeastern.taapp.dao.StudentDAO;
 import edu.northeastern.taapp.model.Application;
 import edu.northeastern.taapp.model.Application.Status;
+import edu.northeastern.taapp.model.Course;
 import edu.northeastern.taapp.model.Job;
 import edu.northeastern.taapp.model.Staff;
 import edu.northeastern.taapp.model.Student;
@@ -109,11 +114,50 @@ public class ApplicationController {
 		return "submitApplicationSuccess";
 	}
 
+//	@GetMapping("/viewAllApplications")
+//	public String viewApplicationsByStaff(Model model, HttpServletRequest httpRequest, @RequestParam(name = "page", defaultValue = "0") int page) {
+//	    Staff staff = (Staff) httpRequest.getSession().getAttribute("storedStaff");
+//	    
+//	    Pageable pageable = PageRequest.of(page, 5);
+//	    Page<Application> taApplicationsPage = applicationDAO.getApplicationsByStaff(staff, pageable);
+//
+//	    model.addAttribute("taApplications", taApplicationsPage.getContent());
+//	    model.addAttribute("page", taApplicationsPage);
+//
+//	    return "viewAllApplications";
+//	}
+
 	@GetMapping("/viewAllApplications")
-	public String viewApplicationsByStaff(Model model, HttpServletRequest httpRequest) {
+	public String viewAllApplications(Model model, HttpServletRequest httpRequest,
+			@RequestParam(defaultValue = "") String status, @RequestParam(defaultValue = "0") String jobId,
+			@RequestParam(name = "page", defaultValue = "0") int page) {
+
 		Staff staff = (Staff) httpRequest.getSession().getAttribute("storedStaff");
-		List<Application> taApplications = applicationDAO.getApplicationsByStaff(staff);
-		model.addAttribute("taApplications", taApplications);
+		Pageable pageable = PageRequest.of(page, 5);
+		Page<Application> taApplicationsPage = null;
+		
+		if (!status.equals("") && !jobId.equals("0")) {
+			Job job = jobDAO.getJobById(jobId);
+			taApplicationsPage = applicationDAO.getFilteredApplications(staff, status, job, pageable);
+			model.addAttribute("courseName", job.getCourse().getCourseName());
+		} else if(!status.equals("") && jobId.equals("0")) {
+			taApplicationsPage = applicationDAO.getApplicationsByStaffAndStatus(staff, status, pageable);
+		} else if(status.equals("") && !jobId.equals("0")) {
+			Job job = jobDAO.getJobById(jobId);
+			taApplicationsPage = applicationDAO.getApplicationsByStaffAndJob(staff, job, pageable);
+			model.addAttribute("courseName", job.getCourse().getCourseName());
+		} else {
+			taApplicationsPage = applicationDAO.getApplicationsByStaff(staff, pageable);
+		}
+
+		List<Job> jobs = jobDAO.getJobsByStaff(staff);
+		
+		model.addAttribute("jobs", jobs);
+		model.addAttribute("taApplications", taApplicationsPage.getContent());
+		model.addAttribute("page", taApplicationsPage);
+		model.addAttribute("status", status);
+		model.addAttribute("jobId", jobId);
+
 		return "viewAllApplications";
 	}
 
@@ -207,7 +251,7 @@ public class ApplicationController {
 		if (storedStudent == null) {
 			return "redirect:/";
 		}
-		
+
 		Application application = applicationDAO.getApplicationById(applicationId);
 		if (!application.getStudent().getNuid().equals(storedStudent.getNuid())) {
 			return "redirect:/";
@@ -220,12 +264,12 @@ public class ApplicationController {
 	public String deleteApplicationStudent(Model model, @PathVariable Long applicationId,
 			HttpServletRequest httpRequest) {
 		Student storedStudent = (Student) httpRequest.getSession().getAttribute("storedStudent");
-		
+
 		if (storedStudent == null) {
 			return "redirect:/";
 		}
 		Application application = applicationDAO.getApplicationById(applicationId);
-		
+
 		if (!application.getStudent().getNuid().equals(storedStudent.getNuid())) {
 			return "redirect:/";
 		}

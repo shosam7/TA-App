@@ -24,7 +24,7 @@ public class HibernateConfig {
             configuration.setProperty("hibernate.connection.username", "root");
             configuration.setProperty("hibernate.connection.password", "12345678");
             configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-            configuration.setProperty("hibernate.show_sql", "true");
+            configuration.setProperty("hibernate.show_sql", "false");
             configuration.setProperty("hibernate.format_sql", "true");
             configuration.setProperty("hibernate.hbm2ddl.auto", "update");
 

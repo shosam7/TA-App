@@ -12,8 +12,6 @@
 <body>
     <div class="container mt-5">
         <h2 class="text-center mb-4">View Application</h2>
-
-        <!-- Student Details -->
         <div class="card mb-3">
             <div class="card-header">
                 <h4 class="card-title">Student Details</h4>
@@ -21,27 +19,28 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4">
-                        <!-- Student Photo -->
-                        <img th:src="@{'/photo/' + ${taApplication.student.nuid}}" class="img-thumbnail" alt="Student Photo">
+                        <img th:src="@{'/photo/' + ${taApplication.student.nuid}}" class="img-thumbnail"
+                            alt="Student Photo">
                     </div>
                     <div class="col-md-8">
-                        <!-- Student Information -->
-                        <p><strong>Student Name:</strong> <span th:text="${taApplication.student.first + ' ' + taApplication.student.last}"></span></p>
+                        <p><strong>Student Name:</strong> <span
+                                th:text="${taApplication.student.first + ' ' + taApplication.student.last}"></span></p>
                         <p><strong>NUID:</strong> <span th:text="${taApplication.student.nuid}"></span></p>
                         <p><strong>Email:</strong> <span th:text="${taApplication.student.email}"></span></p>
                         <p><strong>GPA:</strong> <span th:text="${taApplication.student.gpa}"></span></p>
                         <p><strong>Major:</strong> <span th:text="${taApplication.student.major}"></span></p>
                         <p><strong>Entrance date:</strong> <span th:text="${taApplication.student.entrance}"></span></p>
-                        <p><strong>Expected Graduation Date:</strong> <span th:text="${taApplication.student.graduation}"></span></p>
+                        <p><strong>Expected Graduation Date:</strong> <span
+                                th:text="${taApplication.student.graduation}"></span></p>
                         <p><strong>Coop experience:</strong> <span th:text="${taApplication.student.coop}"></span></p>
-                        <p><strong>Previous TA experience:</strong> <span th:text="${taApplication.student.prevta}"></span></p>
+                        <p><strong>Previous TA experience:</strong> <span
+                                th:text="${taApplication.student.prevta}"></span></p>
                         <p><strong>Courses Taken:</strong> <span th:text="${taApplication.student.courses}"></span></p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Application Details -->
         <div class="card mb-3">
             <div class="card-header">
                 <h4 class="card-title">Application Details</h4>
@@ -50,28 +49,35 @@
                 <p><strong>Skills:</strong> <span th:text="${taApplication.skills}"></span></p>
                 <p><strong>Grade:</strong> <span th:text="${taApplication.grade}"></span></p>
                 <p><strong>Status:</strong> <span th:text="${taApplication.status}"></span></p>
+                <p><strong>Course Name:</strong></p> <span th:text="${taApplication.job.course.courseName}"></span></p>
             </div>
             <div class="card-footer">
-                <!-- Download Transcript Button -->
-                <a th:href="@{'/downloadTranscript/' + ${taApplication.student.nuid}}" class="btn btn-primary" role="button">Download Transcript</a>
+                <a th:href="@{'/downloadTranscript/' + ${taApplication.student.nuid}}" class="btn btn-primary"
+                    role="button">Download Transcript</a>
 
-                <!-- Download Resume Button -->
-                <a th:href="@{'/downloadResume/' + ${taApplication.applicationId}}" class="btn btn-primary" role="button">Download Resume</a>
+                <a th:href="@{'/downloadResume/' + ${taApplication.applicationId}}" class="btn btn-primary"
+                    role="button">Download Resume</a>
+
+                <a th:href="@{'/viewPDF/' + ${'Transcript'} + '/' + ${taApplication.applicationId}}"
+                    class="btn btn-info" role="button" target="_blank">View Transcript</a>
+
+                <a th:href="@{'/viewPDF/' + ${'Resume'} + '/' + ${taApplication.applicationId}}" class="btn btn-info"
+                    role="button" target="_blank">View Resume</a>
             </div>
         </div>
 
-        <!-- Action Buttons -->
         <div class="mb-3">
-            <a th:href="@{'/rejectApplicationMessage/' + ${taApplication.applicationId}}" class="btn btn-danger">Reject</a>
-            <a th:href="@{'/scheduleInterviewMessage/' + ${taApplication.applicationId}}" class="btn btn-warning">Schedule Interview</a>
-            <a th:href="@{'/selectApplicationMessage/' + ${taApplication.applicationId}}" class="btn btn-success">Select</a>
+            <a th:href="@{'/rejectApplicationMessage/' + ${taApplication.applicationId}}"
+                class="btn btn-danger">Reject</a>
+            <a th:href="@{'/scheduleInterviewMessage/' + ${taApplication.applicationId}}"
+                class="btn btn-warning">Schedule Interview</a>
+            <a th:href="@{'/selectApplicationMessage/' + ${taApplication.applicationId}}"
+                class="btn btn-success">Select</a>
         </div>
 
-        <!-- Go Back Button -->
         <a href="/viewAllApplications" class="btn btn-secondary">Go Back</a>
     </div>
 
-    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>

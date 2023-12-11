@@ -15,7 +15,6 @@
         </div>
 
         <form th:action="@{/studentRegister}" th:object="${student}" method="post" enctype="multipart/form-data">
-            <!-- Input fields for student properties -->
             <div class="mb-3">
                 <label for="nuid" class="form-label">NUID:</label>
                 <input type="text" class="form-control" id="nuid" th:field="*{nuid}" required>
@@ -71,15 +70,12 @@
                 <input type="text" class="form-control" id="courses" th:field="*{courses}" required>
             </div>
 
-            <!-- Add other input fields for remaining properties -->
 
-            <!-- File input for transcript -->
             <div class="mb-3">
                 <label for="transcript" class="form-label">Transcript:</label>
                 <input type="file" class="form-control" id="transcript" name="transcript">
             </div>
 
-            <!-- File input for photo -->
             <div class="mb-3">
                 <label for="photo" class="form-label">Photo:</label>
                 <input type="file" class="form-control" id="photo" name="photo">
