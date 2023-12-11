@@ -17,13 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.northeastern.taapp.dao.ApplicationDAO;
-import edu.northeastern.taapp.dao.CourseDAO;
 import edu.northeastern.taapp.dao.JobDAO;
 import edu.northeastern.taapp.dao.StaffDAO;
 import edu.northeastern.taapp.dao.StudentDAO;
 import edu.northeastern.taapp.model.Application;
 import edu.northeastern.taapp.model.Application.Status;
-import edu.northeastern.taapp.model.Course;
 import edu.northeastern.taapp.model.Job;
 import edu.northeastern.taapp.model.Staff;
 import edu.northeastern.taapp.model.Student;

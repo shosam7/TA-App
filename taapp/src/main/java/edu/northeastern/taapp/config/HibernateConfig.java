@@ -3,6 +3,7 @@ package edu.northeastern.taapp.config;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import edu.northeastern.taapp.model.Admin;
 import edu.northeastern.taapp.model.Application;
 import edu.northeastern.taapp.model.Course;
 import edu.northeastern.taapp.model.Job;
@@ -19,6 +20,7 @@ public class HibernateConfig {
             configuration.addAnnotatedClass(Job.class);
             configuration.addAnnotatedClass(Course.class);
             configuration.addAnnotatedClass(Application.class);
+            configuration.addAnnotatedClass(Admin.class);
             configuration.setProperty("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
             configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/tadb");
             configuration.setProperty("hibernate.connection.username", "root");

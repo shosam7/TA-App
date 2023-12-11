@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import edu.northeastern.taapp.model.Application;
 import edu.northeastern.taapp.model.Application.Status;
-import edu.northeastern.taapp.model.Course;
 import edu.northeastern.taapp.model.Job;
 import edu.northeastern.taapp.model.Staff;
 import edu.northeastern.taapp.model.Student;

@@ -1,6 +1,8 @@
 package edu.northeastern.taapp.dao;
 
 import java.util.List;
+
+import org.hibernate.HibernateException;
 import org.springframework.stereotype.Repository;
 
 import edu.northeastern.taapp.model.Course;
@@ -19,6 +21,20 @@ public class CourseDAOImpl extends DAO implements CourseDAO {
 		List<Course> allCourseList = getSession().createQuery("from Course", Course.class).list();
 		close();
 		return allCourseList;
+	}
+
+	@Override
+	public void saveCourse(Course course) {
+		try {
+			begin();
+			getSession().persist(course);
+			commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			rollback();
+		} finally {
+			close();
+		}
 	}
 
 }

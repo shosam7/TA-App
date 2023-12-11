@@ -8,16 +8,16 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h2>Register Staff</h2>
+        <h2>Register Admin</h2>
 
-        <div th:if="${#fields.hasErrors('staff.*')}" class="alert alert-danger">
-            <p th:each="error : ${#fields.errors('staff.*')}" th:text="${error}"></p>
+        <div th:if="${#fields.hasErrors('admin.*')}" class="alert alert-danger">
+            <p th:each="error : ${#fields.errors('admin.*')}" th:text="${error}"></p>
         </div>
 
-        <form th:action="@{/staffRegister}" th:object="${staff}" method="post">
+        <form th:action="@{/adminRegister}" th:object="${admin}" method="post">
             <div class="mb-3">
-                <label for="id" class="form-label">NUID:</label>
-                <input type="text" class="form-control" id="nuid" th:field="*{nuid}"required>
+                <label for="id" class="form-label">Admin ID:</label>
+                <input type="text" class="form-control" id="adminId" th:field="*{adminId}"required>
             </div>
 
             <div class="mb-3">

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import edu.northeastern.taapp.dao.StaffDAO;
 import edu.northeastern.taapp.model.Staff;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
@@ -88,8 +87,8 @@ public class StaffController {
 	}
 
 	@GetMapping("/staffLogout")
-    public String staffLogout(HttpSession session) {
-		session.invalidate();
+    public String staffLogout(HttpServletRequest httpRequest) {
+		httpRequest.getSession().invalidate();
         return "redirect:/";
     }
 }
