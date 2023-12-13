@@ -42,7 +42,8 @@ public class AuthorizationFilter implements Filter {
     private static List<String> staffAllowedURLs = List.of("/createJobPage", "/createJobSuccess", "/editJobPage", "/rejectApplicationMessage",
     		"/scheduleInterviewMessage", "/selectApplicationMessage", "/viewAllApplications", "/viewApplication", 
     		"/viewJobsPage");
-    private static List<String> adminAllowedURLs = List.of("/adminAddCoursePage", "/adminRegisterPage");
+    private static List<String> adminAllowedURLs = List.of("/adminAddCoursePage", "/adminRegisterPage", "/adminViewAllStudents", "/searchStudents",
+    		"/viewStudent", "/deleteStudent", "/viewStaff", "/adminViewAllStaffs");
     
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -56,7 +57,32 @@ public class AuthorizationFilter implements Filter {
         String requestURI = request.getRequestURI();
         System.out.println("Request URI in filter: " + requestURI);
         
-        if(studentAllowedURLs.contains(requestURI)){
+        boolean isStudentAllowedURL = false;
+        boolean isStaffAllowedURL = false;
+        boolean isAdminAllowedURL = false;
+        
+        for (String allowedURL : studentAllowedURLs) {
+            if (requestURI.startsWith(allowedURL)) {
+            	isStudentAllowedURL = true;
+                break;
+            }
+        }
+        
+        for (String allowedURL : staffAllowedURLs) {
+            if (requestURI.startsWith(allowedURL)) {
+            	isStaffAllowedURL = true;
+                break;
+            }
+        }
+        
+        for (String allowedURL : adminAllowedURLs) {
+            if (requestURI.startsWith(allowedURL)) {
+                isAdminAllowedURL = true;
+                break;
+            }
+        }
+        
+        if(isStudentAllowedURL){
             if(sessionObjStudent != null){
             	Student storedStudent = (Student) sessionObjStudent;
             	String enteredPassword = storedStudent.getPassword();
@@ -73,7 +99,7 @@ public class AuthorizationFilter implements Filter {
             }
         }
         
-        if(staffAllowedURLs.contains(requestURI)){
+        if(isStaffAllowedURL){
             if(sessionObjStaff instanceof Staff){
             	Staff storedStaff = (Staff) sessionObjStaff;
             	String enteredPassword = storedStaff.getPassword();
@@ -90,7 +116,7 @@ public class AuthorizationFilter implements Filter {
             }
         }
         
-        if(adminAllowedURLs.contains(requestURI)){
+        if(isAdminAllowedURL){
             if(sessionObjAdmin instanceof Admin){
             	Admin storedAdmin = (Admin) sessionObjAdmin;
             	String enteredPassword = storedAdmin.getPassword();

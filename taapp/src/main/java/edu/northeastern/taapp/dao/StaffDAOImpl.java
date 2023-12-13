@@ -7,6 +7,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import edu.northeastern.taapp.model.Staff;
+import edu.northeastern.taapp.model.Student;
 
 @Repository
 public class StaffDAOImpl extends DAO implements StaffDAO {
@@ -41,12 +42,6 @@ public class StaffDAOImpl extends DAO implements StaffDAO {
 	}
 
 	@Override
-	public List<Staff> getAllStaff() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void updateStaff(Staff staff) {
 		try {
 			begin();
@@ -73,6 +68,24 @@ public class StaffDAOImpl extends DAO implements StaffDAO {
 		}  finally {
 			close();
 		}
+	}
+
+	@Override
+	public List<Staff> getAllStaffs() {
+		List<Staff> allStaffs = getSession().createQuery("from Staff", Staff.class).list();
+		close();
+		return allStaffs;
+	}
+
+	@Override
+	public List<Staff> getStaffsByKeyword(String keyword) {
+		List<Staff> staffsByKeyword = getSession().createQuery("SELECT s FROM Staff s "
+				+ "WHERE LOWER(s.fullName) LIKE LOWER(CONCAT('%', :keyword, '%')) "
+				+ "OR LOWER(s.nuid) LIKE LOWER(CONCAT('%', :keyword, '%')) ", Staff.class)
+				.setParameter("keyword", keyword)
+				.list();
+		close();
+		return staffsByKeyword;
 	}
 
 }

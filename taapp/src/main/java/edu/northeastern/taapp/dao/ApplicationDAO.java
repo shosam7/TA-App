@@ -36,4 +36,6 @@ public interface ApplicationDAO {
 	List<Application> getApplicationsByStudentAndStatus(Student student, Status status);
 	
 	List<Application> getApplicationsByJob(Job job);
+	
+	List<Application> getApplicationsByStaff(Staff staff);
 }

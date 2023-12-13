@@ -76,4 +76,16 @@ public class StudentDAOImpl extends DAO implements StudentDAO {
 		close();
 		return student;
 	}
+
+	@Override
+	public List<Student> getStudentsByKeyword(String keyword) {
+		List<Student> studentsByKeyword = getSession().createQuery("SELECT s FROM Student s "
+				+ "WHERE LOWER(s.first) LIKE LOWER(CONCAT('%', :keyword, '%')) "
+				+ "OR LOWER(s.last) LIKE LOWER(CONCAT('%', :keyword, '%')) "
+				+ "OR LOWER(s.nuid) LIKE LOWER(CONCAT('%', :keyword, '%')) ", Student.class)
+				.setParameter("keyword", keyword)
+				.list();
+		close();
+		return studentsByKeyword;
+	}
 }

@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import edu.northeastern.taapp.dao.StudentDAO;
 import edu.northeastern.taapp.model.Student;
-import edu.northeastern.taapp.util.FileUploadUtil;
+import edu.northeastern.taapp.util.FileUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
@@ -48,20 +48,20 @@ public class StudentController {
 		MultipartFile photo = student.getPhoto();
 
 		if (transcript != null && !transcript.isEmpty()) {
-			if (!FileUploadUtil.isPDF(transcript)) {
+			if (!FileUtil.isPDF(transcript)) {
 				bindingResult.rejectValue("transcript", "error.student", "Transcript must be a PDF file");
 				return "studentRegisterPage";
 			}
-			String transcriptPath = FileUploadUtil.saveFile(transcript, student.getNuid(), "Transcript");
+			String transcriptPath = FileUtil.saveFile(transcript, student.getNuid(), "Transcript");
 			student.setTranscriptPath(transcriptPath);
 		}
 
 		if (photo != null && !photo.isEmpty()) {
-			if (!FileUploadUtil.isJPEG(photo)) {
+			if (!FileUtil.isJPEG(photo)) {
 				bindingResult.rejectValue("photo", "error.student", "Photo must be a Jpg file");
 				return "studentRegisterPage";
 			}
-			String photoPath = FileUploadUtil.saveFile(photo, student.getNuid(), "Photo");
+			String photoPath = FileUtil.saveFile(photo, student.getNuid(), "Photo");
 			student.setPhotoPath(photoPath);
 		}
 
@@ -134,10 +134,10 @@ public class StudentController {
 		MultipartFile photo = student.getPhoto();
 
 		if (transcript != null && !transcript.isEmpty()) {
-			if (!FileUploadUtil.isPDF(transcript)) {
+			if (!FileUtil.isPDF(transcript)) {
 				bindingResult.rejectValue("transcript", "error.student", "Transcript must be a PDF file");
 			} else {
-				String transcriptPath = FileUploadUtil.saveFile(transcript, student.getNuid(), "Transcript");
+				String transcriptPath = FileUtil.saveFile(transcript, student.getNuid(), "Transcript");
 				student.setTranscriptPath(transcriptPath);
 			}
 		} else {
@@ -145,10 +145,10 @@ public class StudentController {
 		}
 
 		if (photo != null && !photo.isEmpty()) {
-			if (!FileUploadUtil.isJPEG(photo)) {
+			if (!FileUtil.isJPEG(photo)) {
 				bindingResult.rejectValue("photo", "error.student", "Photo must be a Jpg file");
 			} else {
-				String photoPath = FileUploadUtil.saveFile(photo, student.getNuid(), "Photo");
+				String photoPath = FileUtil.saveFile(photo, student.getNuid(), "Photo");
 				student.setPhotoPath(photoPath);
 			}
 		} else {

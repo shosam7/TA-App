@@ -26,7 +26,7 @@ import edu.northeastern.taapp.model.Job;
 import edu.northeastern.taapp.model.Staff;
 import edu.northeastern.taapp.model.Student;
 import edu.northeastern.taapp.service.EmailService;
-import edu.northeastern.taapp.util.FileUploadUtil;
+import edu.northeastern.taapp.util.FileUtil;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
@@ -88,10 +88,10 @@ public class ApplicationController {
 
 		MultipartFile resume = application.getResume();
 		if (resume != null && !resume.isEmpty()) {
-			if (!FileUploadUtil.isPDF(resume)) {
+			if (!FileUtil.isPDF(resume)) {
 				bindingResult.rejectValue("resume", "error.application", "Resume must be a PDF file");
 			}
-			String resumePath = FileUploadUtil.saveFile(resume, student.getNuid(), "Resume");
+			String resumePath = FileUtil.saveFile(resume, student.getNuid(), "Resume");
 			application.setResumePath(resumePath);
 		}
 

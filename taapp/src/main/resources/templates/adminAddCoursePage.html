@@ -12,7 +12,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Admin Dashboard</a>
+            <a class="navbar-brand" href="#">Add Course</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -33,7 +33,7 @@
 
 
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Add Course</h2>
+        <h2 class="text-center mb-4">Add a new course</h2>
 
         <div th:if="${#fields.hasErrors('course.*')}" class="alert alert-danger">
             <p th:each="error : ${#fields.errors('course.*')}" th:text="${error}"></p>

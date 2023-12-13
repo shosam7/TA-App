@@ -1,6 +1,6 @@
 package edu.northeastern.taapp.dao;
 
-import java.util.Collections;
+import java.util.Collections; 
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -221,5 +221,18 @@ public class ApplicationDAOImpl extends DAO implements ApplicationDAO {
         		.getSingleResult();
         close();
 	    return count;
+	}
+
+	@Override
+	public List<Application> getApplicationsByStaff(Staff staff) {
+		try {
+			String hql = "FROM Application a WHERE a.staff = :staff";
+			return getSession().createQuery(hql, Application.class).setParameter("staff", staff).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		} finally {
+			close();
+		}
 	}
 }

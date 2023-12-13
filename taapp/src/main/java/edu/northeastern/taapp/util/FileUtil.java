@@ -5,9 +5,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-public class FileUploadUtil {
+public class FileUtil {
 	
 	public static boolean isPDF(MultipartFile file) {
         String contentType = file.getContentType();
@@ -38,6 +39,17 @@ public class FileUploadUtil {
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Error saving file: " + e.getMessage());
+        }
+    }
+    
+    public static boolean deleteFile(String filePath) {
+        try {
+            Path path = Paths.get(filePath);
+            Files.delete(path);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

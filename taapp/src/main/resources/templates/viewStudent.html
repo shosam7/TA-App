@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Student</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container mt-5">
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mt-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Student Details</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/adminViewAllStudents">Back</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/adminDashboard">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/adminLogout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <h2 class="text-center mb-4">View Student</h2>
+
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Student Details</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>NUID:</strong> <span th:text="${student.nuid}"></span></p>
+                <p><strong>Email:</strong> <span th:text="${student.email}"></span></p>
+                <p><strong>First Name:</strong> <span th:text="${student.first}"></span></p>
+                <p><strong>Last Name:</strong> <span th:text="${student.last}"></span></p>
+                <p><strong>GPA:</strong> <span th:text="${student.gpa}"></span></p>
+                <p><strong>Major:</strong> <span th:text="${student.major}"></span></p>
+                <p><strong>Entrance Date:</strong> <span th:text="${student.entrance}"></span></p>
+                <p><strong>Graduation Date:</strong> <span th:text="${student.graduation}"></span></p>
+                <p><strong>Coop:</strong> <span th:text="${student.coop}"></span></p>
+                <p><strong>Previous TA:</strong> <span th:text="${student.prevta}"></span></p>
+                <p><strong>Courses:</strong> <span th:text="${student.courses}"></span></p>
+
+                <a th:href="@{'/deleteStudent/' + ${student.nuid}}" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
